@@ -1,0 +1,2 @@
+module EbayScrapeHelper
+end

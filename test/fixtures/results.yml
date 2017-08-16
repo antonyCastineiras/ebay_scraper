@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  object: MyText
+  ebay_scrape: one
+
+two:
+  object: MyText
+  ebay_scrape: two
