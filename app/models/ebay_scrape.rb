@@ -47,7 +47,7 @@ class EbayScrape < ApplicationRecord
 				href: result_href(sresult)
 			)
 			#if the result already exists adds a reference to it
-			result.ebay_scrape.results << Result.where(title: result.title) if !result.persisted?
+			results << Result.where(title: result.title) if !result.persisted?
 	}
 	end
 
@@ -72,7 +72,39 @@ class EbayScrape < ApplicationRecord
 		sresult.css('.lvtitle').children.find(name: :a).first.attributes["href"].value
 	end
 
-	def self.searches
-		self.all.collect {|ebay_scrape| ebay_scrape.search }.uniq
+	def average_price
+		(total_price / number_of_results).round(2)
+	end
+
+	def number_of_results
+		results.count
+	end
+
+	def total_price
+		results.inject(0) { |sum,result| sum + result.price }
+	end
+
+	def most_expensive_result
+		results.max_by(&:price)
+	end
+
+	def cheapest_result
+		results.min_by(&:price)
+	end
+
+	def result_titles
+		results.collect(&:title)
+	end
+
+	def closest_match
+		results.max_by(&:search_rating)
+	end
+
+	def search_words
+		search.split(" ")
+	end
+
+	def search_ratings
+		results.collect(&:search_rating)
 	end
 end

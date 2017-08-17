@@ -1,20 +1,21 @@
-<h1>Results</h1>
-<table class="table table-bordered">
-	<tr>
-		<td>Title</td>
-		<td>Price</td>
-		<td>Shipping</td>
-		<td>Format</td>
-		<td>Condition</td>
-	</tr>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="well">
+			<h1><%= @ebay_scrape.search %></h1>
+			<p>Average Price: £<%= @ebay_scrape.average_price %></p>
+			<p>Most Expensive Result: <%= link_to @ebay_scrape.most_expensive_result.title, @ebay_scrape.most_expensive_result.href %> £<%= @ebay_scrape.most_expensive_result.price %></p>
+			<p>Cheapest Result: <%= link_to @ebay_scrape.cheapest_result.title, @ebay_scrape.cheapest_result.href %> £<%= @ebay_scrape.cheapest_result.price %></p>
+			<p>Closest Match: <%= link_to @ebay_scrape.closest_match.title, @ebay_scrape.closest_match.href %> £<%= @ebay_scrape.closest_match.price %></p>
+			
+			<%= form_tag ebay_scrape_path(@ebay_scrape), method: :patch, remote: true do %>
+				<%= submit_tag "Update Results", class: 'btn btn-primary' %>
+			<% end %>
 
-	<% @ebay_scrape.results.each do |result| %>
-		<tr>
-			<td><a href="<%= result.href %>"><%= result.title %></a></td>
-			<td>£<%= result.price %></td>
-			<td>£<%= result.shipping %></td>
-			<td><%= result.format %></td>
-			<td><%= result.condition %></td>
-		</tr>
-	<% end %>
-</table>
+		</div>		
+	</div>
+</div>
+
+<h1>Results</h1>
+<div class="results-table-container">
+	<%= render partial: 'results_table', locals: { ebay_scrape: @ebay_scrape } %>
+</div>

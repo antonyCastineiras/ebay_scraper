@@ -1,5 +1,5 @@
 class EbayScrapeController < ApplicationController
-  def new
+	def new
   	@ebay_scrape = EbayScrape.new
   end
 
@@ -13,6 +13,8 @@ class EbayScrapeController < ApplicationController
   end
 
   def update
+  	@ebay_scrape = EbayScrape.find(params[:id])
+  	@ebay_scrape.results.each { |result| result.set_page }
   end
 
   private
