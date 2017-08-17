@@ -103,8 +103,4 @@ class EbayScrape < ApplicationRecord
 	def search_words
 		search.split(" ")
 	end
-
-	def search_ratings
-		results.collect(&:search_rating)
-	end
 end

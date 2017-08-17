@@ -10,7 +10,7 @@ class Result < ApplicationRecord
   end
 
   def set_page
-  	update_attribute(:page, result_page.body) 
+  	update_attribute(:page, result_page.body) if !self[:page].present?
   end
 
   def page
