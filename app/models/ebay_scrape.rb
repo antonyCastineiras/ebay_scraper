@@ -103,4 +103,18 @@ class EbayScrape < ApplicationRecord
 	def search_words
 		search.split(" ")
 	end
+
+	def new_recommended_price
+		dif = (most_expensive_result.price - average_price).floor
+		( most_expensive_result.price - (dif / 2) ).floor - 0.01
+	end
+
+	def used_recommeneded_price
+
+	end
+
+	def used_items
+		results.select { |result| result.condition.downcase.include?('used') }
+	end
+
 end
