@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="well text-center">
-			<h1 class=""><%= @ebay_scrape.search %></h1>
+			<h1 class=""><%= @ebay_scrape.search.titleize %></h1>
 			<p class="lead">Closest Match:</br> 
 				<%= link_to @closest_match.title, @closest_match.href %></br> 
 				<%= number_to_currency @closest_match.price, unit: '£' %>
