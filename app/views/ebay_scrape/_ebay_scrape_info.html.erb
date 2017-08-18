@@ -6,46 +6,49 @@
 				<%= link_to @closest_match.title, @closest_match.href %></br> 
 				<%= number_to_currency @closest_match.price, unit: '£' %>
 			</p>
-			<ul class="list-inline">
-				<li>
-					<p>Average Price </br>
-						<span class="lead">
-							<%= number_to_currency @average_price, unit: '£' %>
-						</span></p>	
-				</li>
-				<li >
-					<p>Most Expensive Result:</br>
-						<span class="lead">
-							<%= number_to_currency @most_expensive_result.price, unit: '£' %>		
-						</span>
-					</p> 
-				</li>
-				<li>
-					<p>Cheapest Result:</br>
-						<span class="lead">
-							<%= number_to_currency @cheapest_result.price, unit: '£' %>
-						</span>
-					</p>
-				</li>
-			</ul>
+
+			<hr class="divider"></hr>
 
 			<ul class="list-inline">
 				<li>
-					<p>Recommended Price(New):</br> 
-							<span class="lead">
-								<%= number_to_currency @ebay_scrape.new_recommended_price, unit: '£' %>
-							</span>	
-						</p>
+					<h4>Average Price</h4>
+					<span class="lead">
+						<%= number_to_currency @average_price, unit: '£' %>
+					</span>
+				</li>
+				<li >
+					<h4>Most Expensive Result:</h4>
+					<span class="lead">
+						<%= number_to_currency @most_expensive_result.price, unit: '£' %>		
+					</span>
 				</li>
 				<li>
-					<p>Recommended Price(Used):</br> 
-							<span class="lead">
-								<%= number_to_currency @ebay_scrape.used_recommended_price, unit: '£' %>
-							</span>	
-						</p>
+					<h4>Cheapest Result:</h4>
+					<span class="lead">
+						<%= number_to_currency @cheapest_result.price, unit: '£' %>
+					</span>
 				</li>
 			</ul>
+
+			<hr class="divider"></hr>
 			
+			<ul class="list-inline">
+				<li>
+					<h4>Recommended Price(New):</h4> 
+					<span class="lead">
+						<%= number_to_currency @ebay_scrape.new_recommended_price, unit: '£' %>
+					</span>	
+				</li>
+				<li>
+					<h4>Recommended Price(Used):</h4> 
+					<span class="lead">
+						<%= number_to_currency @ebay_scrape.used_recommended_price, unit: '£' %>
+					</span>	
+				</li>
+			</ul>
+
+			<hr class="divider"></hr>
+
 			<%= form_tag ebay_scrape_path(@ebay_scrape), method: :patch, remote: true do %>
 				<%= submit_tag "Update Results", class: 'btn btn-primary' %>
 			<% end %>
