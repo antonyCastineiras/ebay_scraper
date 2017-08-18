@@ -1,0 +1,18 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="well">
+			<h1><%= @ebay_scrape.search %></h1>
+			<p>Average Price: £<%= @average_price %></p>
+			<p>Most Expensive Result: <%= link_to @most_expensive_result.title, @most_expensive_result.href %> £<%= @most_expensive_result.price %></p>
+			<p>Cheapest Result: <%= link_to @cheapest_result.title, @cheapest_result.href %> £<%= @cheapest_result.price %></p>
+			<p>Closest Match: <%= link_to @closest_match.title, @closest_match.href %> £<%= @closest_match.price %></p>
+			<p>Recommended Price(New): <%= @ebay_scrape.new_recommended_price %></p>
+			<p>Recommended Price(Used): <span class="recommended-price-used"><%= @ebay_scrape.used_recommended_price %></span></p>
+			
+			<%= form_tag ebay_scrape_path(@ebay_scrape), method: :patch, remote: true do %>
+				<%= submit_tag "Update Results", class: 'btn btn-primary' %>
+			<% end %>
+
+		</div>		
+	</div>
+</div>

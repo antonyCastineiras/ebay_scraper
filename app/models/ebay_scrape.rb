@@ -72,23 +72,25 @@ class EbayScrape < ApplicationRecord
 		sresult.css('.lvtitle').children.find(name: :a).first.attributes["href"].value
 	end
 
-	def average_price
-		(total_price / number_of_results).round(2)
+	def average_price(results)
+		number_of_results = results.count
+		price = total_price(results)
+		(price / number_of_results).round(2)
+	end
+
+	def total_price(results)
+		results.inject(0) { |sum,result| sum + result.price }
 	end
 
 	def number_of_results
 		results.count
 	end
 
-	def total_price
-		results.inject(0) { |sum,result| sum + result.price }
-	end
-
-	def most_expensive_result
+	def most_expensive_result(results)
 		results.max_by(&:price)
 	end
 
-	def cheapest_result
+	def cheapest_result(results)
 		results.min_by(&:price)
 	end
 
@@ -105,12 +107,19 @@ class EbayScrape < ApplicationRecord
 	end
 
 	def new_recommended_price
-		dif = (most_expensive_result.price - average_price).floor
-		( most_expensive_result.price - (dif / 2) ).floor - 0.01
+		mer = most_expensive_result(results)
+		dif = ( mer.price - average_price(results) ).floor
+		( mer.price - (dif / 2) ).floor - 0.01
 	end
 
-	def used_recommeneded_price
-
+	def used_recommended_price
+		if used_items.count > 0
+			results = used_items
+			average = average_price(results)
+			mer = most_expensive_result(results)
+			dif = ( mer.price - average ).floor
+			( mer.price - (dif / 2) ).floor - 0.01
+		end
 	end
 
 	def used_items

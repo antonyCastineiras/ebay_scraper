@@ -1,20 +1,5 @@
-<div class="row">
-	<div class="col-xs-12">
-		<div class="well">
-			<h1><%= @ebay_scrape.search %></h1>
-			<p>Average Price: £<%= @ebay_scrape.average_price %></p>
-			<p>Most Expensive Result: <%= link_to @ebay_scrape.most_expensive_result.title, @ebay_scrape.most_expensive_result.href %> £<%= @ebay_scrape.most_expensive_result.price %></p>
-			<p>Cheapest Result: <%= link_to @ebay_scrape.cheapest_result.title, @ebay_scrape.cheapest_result.href %> £<%= @ebay_scrape.cheapest_result.price %></p>
-			<p>Closest Match: <%= link_to @ebay_scrape.closest_match.title, @ebay_scrape.closest_match.href %> £<%= @ebay_scrape.closest_match.price %></p>
-			<p>Recommended Price(New): <%= @ebay_scrape.new_recommended_price %></p>
-			<p>Recommended Price(Used):</p>
-			
-			<%= form_tag ebay_scrape_path(@ebay_scrape), method: :patch, remote: true do %>
-				<%= submit_tag "Update Results", class: 'btn btn-primary' %>
-			<% end %>
-
-		</div>		
-	</div>
+<div class="ebay-scrape-info-container">
+	<%= render partial: 'ebay_scrape_info' %>
 </div>
 
 <h1>Results</h1>
