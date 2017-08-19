@@ -4,13 +4,15 @@ class Result < ApplicationRecord
 
   validates :title, uniqueness: true
 
+  after_commit :set_page, on: :create
+
   def result_page
   	a = Mechanize.new
   	a.get(self.href)
   end
 
   def set_page
-  	update_attribute(:page, result_page.body) if !self[:page].present?
+  	ResultPageJob.perform_later(self) if self[:page].blank?
   end
 
   def page

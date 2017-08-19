@@ -14,7 +14,6 @@ class EbayScrapeController < ApplicationController
   end
 
   def update
-  	@ebay_scrape.results.each { |result| result.set_page }
   end
 
   private

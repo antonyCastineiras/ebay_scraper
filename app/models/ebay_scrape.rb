@@ -1,6 +1,6 @@
 class EbayScrape < ApplicationRecord
 	serialize :object
-	has_many :results
+	has_many :results, -> { order(created_at: :asc)}
 
 	after_create :create_results
 
