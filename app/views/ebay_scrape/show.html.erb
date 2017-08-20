@@ -6,3 +6,14 @@
 <div class="results-table-container">
 	<%= render partial: 'results_table', locals: { ebay_scrape: @ebay_scrape } %>
 </div>
+
+<% if !@ebay_scrape.finished_updating? %>
+	<script>
+		$(document).ready(function() {
+			function updateEbayScrape() {
+				$('body').load('/ebay_scrape/' + $('.ebay-scrape-info').data('scrape-id') )
+			}
+			setTimeout(updateEbayScrape, 1000)
+		});
+	</script>
+<% end %>

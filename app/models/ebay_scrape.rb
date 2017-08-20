@@ -126,4 +126,7 @@ class EbayScrape < ApplicationRecord
 		results.select { |result| result.condition.downcase.include?('used') }
 	end
 
+	def finished_updating?
+		results.all? { |result| result[:page].present? }
+	end
 end

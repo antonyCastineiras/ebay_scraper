@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-xs-12">
-		<div class="well text-center">
+		<div class="ebay-scrape-info well text-center" data-scrape-id="<%= @ebay_scrape.id %>">
 			<h1 class=""><%= @ebay_scrape.search.titleize %></h1>
 			<p class="lead">Closest Match:</br> 
 				<%= link_to @closest_match.title, @closest_match.href %></br> 
@@ -46,12 +46,6 @@
 					</span>	
 				</li>
 			</ul>
-
-			<hr class="divider"></hr>
-
-			<%= form_tag ebay_scrape_path(@ebay_scrape), method: :patch, remote: true do %>
-				<%= submit_tag "Update Results", class: 'btn btn-primary' %>
-			<% end %>
 
 		</div>		
 	</div>

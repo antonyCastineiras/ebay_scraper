@@ -14,6 +14,7 @@ class EbayScrapeController < ApplicationController
   end
 
   def update
+  	@finished = @ebay_scrape.finished_updating?
   end
 
   private
