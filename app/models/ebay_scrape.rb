@@ -2,7 +2,7 @@ class EbayScrape < ApplicationRecord
 	serialize :object # need to remove object from model
 	has_many :results, -> { order(created_at: :asc) }
 
-	after_create :create_results
+	after_create :scrape_ebay
 
 	def home_page_url
 		'https://www.ebay.co.uk'
@@ -36,14 +36,41 @@ class EbayScrape < ApplicationRecord
 
 	def search_results
 		results = []
+		first_page = agent.get( search_page_href(1) )
+		pages_count = number_of_pages( first_page )
+
 		i = 1
-		while (results.length < result_limit && i < 3) do
-			href = search_page_href(i)
-			page = agent.get(href)
-			results += page_results(page)
+		while ( i <= pages_count ) do
+			page = agent.get( search_page_href(i) )
+			page_results( page ).each { |result| results << result  }
 			i += 1
 		end
+
 		results.flatten
+	end
+
+	def number_of_pages(page)
+		page.css('td.pages a.pg').present? ? page_numbers = page.css('td.pages a.pg').last.text.to_i : 0  
+	end
+
+	def create_results(search_results)
+		search_results.each {|sresult| 
+			result = 	Result.new( result_arguments(sresult) )
+			result.save if result.is_exact_match?
+			
+			#if the result already exists adds a reference to it
+			results << Result.where(title: result.title) if !result.persisted?
+			break if results.count >= result_limit
+		}
+	end
+
+	def scrape_ebay
+		results = search_results
+		create_results( results )
+	end
+
+	def result_arguments(result)
+		{ebay_scrape: self, title: result_title(result), price: result_price(result), format: result_format(result), shipping: result_shipping(result), href: result_href(result)}
 	end
 
 	def search_page_href(page_number)
@@ -66,20 +93,6 @@ class EbayScrape < ApplicationRecord
 		search_words.map { |search_word| search_word + "+" }.join
 	end
 
-	def create_results
-		search_results.each {|sresult| 
-			result = Result.create(
-				ebay_scrape: self, 
-				title: result_title(sresult), 
-				price: result_price(sresult), 
-				format: result_format(sresult), 
-				shipping: result_shipping(sresult), 
-				href: result_href(sresult)
-			)
-			#if the result already exists adds a reference to it
-			results << Result.where(title: result.title) if !result.persisted?
-	}
-	end
 
 	def result_title(sresult)
 		sresult.css('.lvtitle').text.strip
