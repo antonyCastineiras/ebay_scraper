@@ -13,7 +13,7 @@
 				<li>
 					<h4>Average Price</h4>
 					<span class="lead">
-						<%= number_to_currency @ebay_scrape.average_price, unit: '£' %>
+						<%= number_to_currency @ebay_scrape.average_price(@results), unit: '£' %>
 					</span>
 				</li>
 				<li >
