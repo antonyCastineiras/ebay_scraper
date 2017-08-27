@@ -20,7 +20,7 @@ class EbayScrapeController < ApplicationController
   private
 
   def ebay_scrape_params
-  	params.require(:ebay_scrape).permit(:search)
+  	params.require(:ebay_scrape).permit(:search, :max_number_of_results)
   end
 
   def set_ebay_scrape_variables

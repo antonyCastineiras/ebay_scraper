@@ -60,7 +60,7 @@ class EbayScrape < ApplicationRecord
 			
 			#if the result already exists adds a reference to it
 			results << Result.where(title: result.title) if !result.persisted?
-			break if results.count >= result_limit
+			break if results.count >= max_number_of_results
 		}
 	end
 
@@ -79,10 +79,6 @@ class EbayScrape < ApplicationRecord
 
 	def page_results(page)
 		page.css('.sresult')
-	end
-
-	def result_limit
-		40
 	end
 
 	def search_words

@@ -3,9 +3,40 @@
 		<h1 class="text-center">Enter ebay search here</h1>
 		<div class="col-md-4 col-md-offset-4">
 			<%= form_for @ebay_scrape, url: ebay_scrape_index_path, method: :post do |f| %>
+
 				<div class="input-group input-group-lg text-center">
 					<%= f.text_field :search, class: 'form-control', placeholder: :search%>
 				</div>
+				
+				<h5 class="text-center">max number of results: </h5>
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="input-group">
+							<%= f.label :max_number_of_results, "25" %>
+							<%= f.radio_button :max_number_of_results, 25, {} %>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="input-group">
+							<%= f.label :max_number_of_results, "50" %>
+							<%= f.radio_button :max_number_of_results, 50, {} %>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="input-group">
+							<%= f.label :max_number_of_results, "100" %>
+							<%= f.radio_button :max_number_of_results, 100, {} %>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="input-group">
+							<%= f.label :max_number_of_results, "200" %>
+							<%= f.radio_button :max_number_of_results, 200, {} %>
+						</div>
+					</div>
+				</div>
+				
+
 				<div class="actions text-center">
 					<%= f.submit "Search", class: 'btn btn-lg btn-primary' %>
 				</div>
