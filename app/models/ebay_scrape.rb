@@ -1,16 +1,19 @@
 class EbayScrape < ApplicationRecord
-	serialize :object
-	has_many :results, -> { order(created_at: :asc)}
+	serialize :object # need to remove object from model
+	has_many :results, -> { order(created_at: :asc) }
 
 	after_create :create_results
 
-	def homepage_url
+	def home_page_url
 		'https://www.ebay.co.uk'
 	end
 
+	def agent(args = {})
+		Mechanize.new(args)
+	end
+
 	def mechanize_homepage
-		a = Mechanize.new
-		return a.get(homepage_url)
+		agent.get(home_page_url)
 	end
 
 	def search_input(page)
@@ -21,19 +24,46 @@ class EbayScrape < ApplicationRecord
 		page.forms.first.buttons.first
 	end
 
-	def search_ebay 
+	def ebay_search_page 
 		page = mechanize_homepage
 		search_input(page).value = self.search
 		page.forms.first.submit
 	end
 
 	def results_page
-		search_ebay
+		ebay_search_page
 	end
 
 	def search_results
-		page = results_page
+		results = []
+		i = 1
+		while (results.length < result_limit && i < 3) do
+			href = search_page_href(i)
+			page = agent.get(href)
+			results += page_results(page)
+			i += 1
+		end
+		results.flatten
+	end
+
+	def search_page_href(page_number)
+		home_page_url + '/sch/?_nkw=' + key_words_string + '&_pgn=' + page_number.to_s + '&_ipg=200'
+	end
+
+	def page_results(page)
 		page.css('.sresult')
+	end
+
+	def result_limit
+		40
+	end
+
+	def search_words
+		search.split(" ")
+	end
+
+	def key_words_string
+		search_words.map { |search_word| search_word + "+" }.join
 	end
 
 	def create_results
@@ -102,9 +132,6 @@ class EbayScrape < ApplicationRecord
 		results.max_by(&:search_rating)
 	end
 
-	def search_words
-		search.split(" ")
-	end
 
 	def new_recommended_price
 		mer = most_expensive_result(results)
