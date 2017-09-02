@@ -23,6 +23,15 @@ class Result < ApplicationRecord
   	page.css('#vi-itm-cond').text
   end
 
+  def deviation
+    (price - ebay_scrape.average_price_of_results).abs
+  end
+
+  def deviation_rating
+    average_deviation = ebay_scrape.average_deviation_of_result_price
+    deviation <= average_deviation ? 5 : 0
+  end
+
   def search_rating
   	rating = 0
   	rating += search_words_count
@@ -44,5 +53,10 @@ class Result < ApplicationRecord
 
   def exact_match_rating
   	5
+  end
+
+  def contains_all_search_words?
+    a = search_words.collect { |search_word| title.downcase.include?(search_word.downcase) }
+    a.all? { |b| b == true }
   end
 end

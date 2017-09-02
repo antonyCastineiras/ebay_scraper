@@ -2,7 +2,7 @@ class EbayScrape < ApplicationRecord
 	serialize :object # need to remove object from model
 	has_many :results, -> { order(created_at: :asc) }
 
-	after_create :scrape_ebay
+	after_create :scrape_ebay, :set_average_price_of_results, :set_average_deviation_of_result_price
 
 	def home_page_url
 		'https://www.ebay.co.uk'
@@ -39,7 +39,7 @@ class EbayScrape < ApplicationRecord
 		first_page = agent.get( search_page_href(1) )
 		pages_count = number_of_pages( first_page )
 
-		i = 1
+		pages_count == 0 ? i = 0 : i = 1
 		while ( i <= pages_count ) do
 			page = agent.get( search_page_href(i) )
 			page_results( page ).each { |result| results << result  }
@@ -54,9 +54,9 @@ class EbayScrape < ApplicationRecord
 	end
 
 	def create_results(search_results)
-		search_results.each {|sresult| 
+		search_results.each { |sresult| 
 			result = 	Result.new( result_arguments(sresult) )
-			result.save if result.is_exact_match?
+			result.save if result.contains_all_search_words?
 			
 			#if the result already exists adds a reference to it
 			results << Result.where(title: result.title) if !result.persisted?
@@ -75,6 +75,7 @@ class EbayScrape < ApplicationRecord
 
 	def search_page_href(page_number)
 		home_page_url + '/sch/?_nkw=' + key_words_string + '&_pgn=' + page_number.to_s + '&_ipg=200'
+		# &LH_Complete=1&LH_Sold=1
 	end
 
 	def page_results(page)
@@ -117,6 +118,14 @@ class EbayScrape < ApplicationRecord
 		(price / number_of_results).round(2)
 	end
 
+	def set_average_price_of_results
+		update_attribute( :average_price_of_results, average_price(results) ) if results.any?
+	end
+
+	def set_average_deviation_of_result_price
+		update_attribute( :average_deviation_of_result_price, average_deviation_of_price ) if results.any? 
+	end
+
 	def total_price(results)
 		results.inject(0) { |sum,result| sum + result.price }
 	end
@@ -143,26 +152,47 @@ class EbayScrape < ApplicationRecord
 
 
 	def new_recommended_price
-		mer = most_expensive_result(results)
-		dif = ( mer.price - average_price(results) ).floor
-		( mer.price - (dif / 2) ).floor - 0.01
+		if new_items.count > 0
+			results = new_items.select { |result| result.format.downcase == 'buy it now' }
+			recommended_price(results)
+		else
+			0.00
+		end
 	end
 
 	def used_recommended_price
 		if used_items.count > 0
-			results = used_items
-			average = average_price(results)
-			mer = most_expensive_result(results)
-			dif = ( mer.price - average ).floor
-			( mer.price - (dif / 2) ).floor - 0.01
+			results = used_items.select { |result| result.format.downcase == 'buy it now'  }
+			recommended_price(results)
+		else
+			0.00
 		end
+	end
+
+	def recommended_price(results)
+		ad = calculate_average_deviation(self.results)
+		ap = average_price(results)
+		selected_results = results.select { |result| (result.price - ap).abs <= ad }
+		selected_results.count > 0 ? average_price(selected_results).floor - 0.01 : 0.00
+	end
+
+	def calculate_average_deviation(results)
+		results.inject(0) { |sum,result| sum += ( result.price - average_price(results) ).abs } / number_of_results
 	end
 
 	def used_items
 		results.select { |result| result.condition.downcase.include?('used') }
 	end
 
+	def new_items
+		results.select { |result| result.condition.downcase == 'new' }
+	end
+
 	def finished_updating?
 		results.all? { |result| result[:page].present? }
+	end
+
+	def average_deviation_of_price
+		results.inject(0) { |sum,result| sum += (result.price - average_price_of_results).abs } / number_of_results
 	end
 end

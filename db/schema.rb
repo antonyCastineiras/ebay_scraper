@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170827181514) do
+ActiveRecord::Schema.define(version: 20170830111313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,16 +18,18 @@ ActiveRecord::Schema.define(version: 20170827181514) do
   create_table "ebay_scrapes", force: :cascade do |t|
     t.string   "search"
     t.text     "object"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.integer  "max_number_of_results", default: 50
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "max_number_of_results",    default: 50
+    t.float    "average_price_of_results"
+    t.float    "average_deviation_of_result_price"
   end
 
   create_table "results", force: :cascade do |t|
     t.text     "object"
     t.integer  "ebay_scrape_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.string   "title"
     t.float    "price"
     t.string   "href"
@@ -35,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170827181514) do
     t.float    "shipping"
     t.string   "condition"
     t.text     "page"
+    t.float    "average_price_of_search"
     t.index ["ebay_scrape_id"], name: "index_results_on_ebay_scrape_id", using: :btree
   end
 

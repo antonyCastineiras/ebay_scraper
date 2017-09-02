@@ -8,7 +8,7 @@
 	</tr>
 
 	<% ebay_scrape.results.each do |result| %>
-		<tr>
+		<tr id="result-<%= result.id %>">
 			<td><a href="<%= result.href %>"><%= result.title %></a></td>
 			<td>£<%= result.price %></td>
 			<td>£<%= result.shipping %></td>
