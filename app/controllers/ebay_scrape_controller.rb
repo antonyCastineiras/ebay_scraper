@@ -29,6 +29,6 @@ class EbayScrapeController < ApplicationController
   end	
 
   def filter_params
-  	params.slice(:format, :price_order).permit(:format, :price_order)
+  	params.slice(:format, :price_order, :con).permit(:format, :price_order, :con)
   end
 end

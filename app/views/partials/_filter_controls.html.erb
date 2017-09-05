@@ -1,0 +1,14 @@
+<%= form_tag ebay_scrape_path(@ebay_scrape), method: :get, class: 'form-controls' do %>
+	<div class="input-group">
+		<%= label_tag :format_buy_it_now, 'buy it now: ' %>
+		<%= radio_button_tag 'format', 'buy it now', false %>
+		<%= label_tag :format_auction, 'auction: ' %>
+		<%= radio_button_tag 'format', 'auction', false %>
+		<%= label_tag :format, 'all: ' %>
+		<%= radio_button_tag 'format', '', false %>
+	</div>
+
+	<div class="actions">
+		<%= submit_tag "Filter Results", class: 'btn btn-primary' %>
+	</div>
+<% end %>
