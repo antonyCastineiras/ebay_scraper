@@ -160,9 +160,9 @@ class EbayScrape < ApplicationRecord
 		end
 	end
 
-	def used_recommended_price
-		if used_items.count > 0
-			results = used_items.select { |result| result.format.downcase == 'buy it now'  }
+	def used_recommended_price(results)
+		if results.count > 0
+			# results = used_items.select { |result| result.format.downcase == 'buy it now'  }
 			recommended_price(results)
 		else
 			0.00

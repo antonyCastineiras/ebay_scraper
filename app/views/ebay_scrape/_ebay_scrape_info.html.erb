@@ -33,22 +33,17 @@
 				<hr class="divider"></hr>
 			
 			<ul class="list-inline">
+				
 				<li>
-					<h4>Recommended Price(New):</h4> 
+					<h4>Recommended Price:</h4> 
 					<span class="lead">
-						<%= number_to_currency ebay_scrape.new_recommended_price, unit: '£' %>
-					</span>	
-				</li>
-				<li>
-					<h4>Recommended Price(Used):</h4> 
-					<span class="lead">
-						<%= number_to_currency ebay_scrape.used_recommended_price, unit: '£' %>
+						<%= number_to_currency ebay_scrape.recommended_price(@results), unit: '£' %>
 					</span>	
 				</li>
 			</ul>
 
 		</div>
-				
+
 		<div class="filter-controls-container">
 			<%= render partial: 'partials/filter_controls' %>
 		</div>

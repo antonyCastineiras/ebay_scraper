@@ -29,6 +29,10 @@ class EbayScrapeController < ApplicationController
   end	
 
   def filter_params
-  	params.slice(:format, :price_order, :con).permit(:format, :price_order, :con)
+  	params.slice(:format, :price_order, :condition)
+  end
+
+  def needs_selecting?(element)
+  	params[element.name] == element.value
   end
 end

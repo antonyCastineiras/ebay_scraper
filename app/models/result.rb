@@ -6,13 +6,14 @@ class Result < ApplicationRecord
 
   scope :price_order, -> (value) { order price: value }
   scope :format, -> (format) { where format: format }
+  scope :condition, -> (condition) { where condition: condition }
 
   validates :title, uniqueness: true
 
   after_commit :set_page, on: :create
 
-  def self.sort_by_price(value)
-    order("price #{value}")
+  def condition
+    self[:condition] || 'getting details...'
   end
 
   def result_page
@@ -28,7 +29,11 @@ class Result < ApplicationRecord
   	Nokogiri::HTML(self[:page])
   end
 
-  def condition
+  def update_page_attributes
+    update_attributes(condition: condition_from_page)
+  end
+
+  def condition_from_page
   	page.css('#vi-itm-cond').text
   end
 

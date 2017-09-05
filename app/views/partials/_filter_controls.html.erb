@@ -1,11 +1,20 @@
 <%= form_tag ebay_scrape_path(@ebay_scrape), method: :get, class: 'form-controls' do %>
 	<div class="input-group">
 		<%= label_tag :format_buy_it_now, 'buy it now: ' %>
-		<%= radio_button_tag 'format', 'buy it now', false %>
+		<%= radio_button_tag 'format', 'buy it now', params[:format] == 'buy it now' ? true : false %>
 		<%= label_tag :format_auction, 'auction: ' %>
-		<%= radio_button_tag 'format', 'auction', false %>
+		<%= radio_button_tag 'format', 'auction', params[:format] == 'auction' ? true : false %>
 		<%= label_tag :format, 'all: ' %>
-		<%= radio_button_tag 'format', '', false %>
+		<%= radio_button_tag 'format', '',  params[:format] == '' ? true : false %>
+	</div>
+
+	<div class="input-group">
+		<%= label_tag :condition_used, 'Used: ' %>
+		<%= radio_button_tag 'condition', 'Used', params[:condition] == 'Used' ? true : false %>
+		<%= label_tag :condition_new, 'New: ' %>
+		<%= radio_button_tag 'condition', 'New', params[:condition] == 'New' ? true : false %>
+		<%= label_tag :condition, 'Both: ' %>
+		<%= radio_button_tag 'condition', '', params[:condition] == '' ? true : false %>
 	</div>
 
 	<div class="actions">
