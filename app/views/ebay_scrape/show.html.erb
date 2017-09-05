@@ -5,7 +5,7 @@
 
 	<h1>Results</h1>
 	<div class="results-table-container">
-		<%= render partial: 'results_table', locals: { ebay_scrape: @ebay_scrape } %>
+		<%= render partial: 'results_table', locals: { results: @results } %>
 	</div>
 
 	<% if !@ebay_scrape.finished_updating? %>

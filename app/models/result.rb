@@ -1,6 +1,11 @@
 class Result < ApplicationRecord
+  include Filterable
+
 	serialize :page
   belongs_to :ebay_scrape
+
+  scope :format, -> (format) { where format: format }
+  scope :result_order, -> (order) { order(order) }
 
   validates :title, uniqueness: true
 
