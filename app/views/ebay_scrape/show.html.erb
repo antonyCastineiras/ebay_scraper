@@ -12,7 +12,7 @@
 		<script>
 			$(document).ready(function() {
 				function updateEbayScrape() {
-					$('body').load('/ebay_scrape/' + $('.ebay-scrape-info').data('scrape-id') )
+					$('body').load( window.location.href )
 				}
 				setTimeout(updateEbayScrape, 3000)
 			});
