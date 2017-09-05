@@ -4,12 +4,16 @@ class Result < ApplicationRecord
 	serialize :page
   belongs_to :ebay_scrape
 
+  scope :price_order, -> (value) { order price: value }
   scope :format, -> (format) { where format: format }
-  scope :result_order, -> (order) { order(order) }
 
   validates :title, uniqueness: true
 
   after_commit :set_page, on: :create
+
+  def self.sort_by_price(value)
+    order("price #{value}")
+  end
 
   def result_page
   	a = Mechanize.new

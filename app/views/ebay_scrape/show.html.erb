@@ -1,6 +1,6 @@
 <% if @results.any? %>
 	<div class="ebay-scrape-info-container">
-		<%= render partial: 'ebay_scrape_info' %>
+		<%= render partial: 'ebay_scrape_info', locals: { ebay_scrape: @ebay_scrape } %>
 	</div>
 
 	<h1>Results</h1>

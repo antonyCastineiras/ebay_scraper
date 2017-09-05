@@ -1,10 +1,10 @@
 <div class="row">
 	<div class="col-xs-12">
-		<div class="ebay-scrape-info well text-center" data-scrape-id="<%= @ebay_scrape.id %>">
-			<h1 class=""><%= @ebay_scrape.search.titleize %></h1>
+		<div class="ebay-scrape-info well text-center" data-scrape-id="<%= ebay_scrape.id %>">
+			<h1 class=""><%= ebay_scrape.search.titleize %></h1>
 			<p class="lead">Closest Match:</br> 
-				<%= link_to @closest_match.title, @closest_match.href %></br> 
-				<%= number_to_currency @closest_match.price, unit: '£' %>
+				<%= link_to ebay_scrape.closest_match.title, ebay_scrape.closest_match.href %></br> 
+				<%= number_to_currency ebay_scrape.closest_match.price, unit: '£' %>
 			</p>
 
 			<hr class="divider"></hr>
@@ -13,19 +13,19 @@
 				<li>
 					<h4>Average Price</h4>
 					<span class="lead">
-						<%= number_to_currency @ebay_scrape.average_price(@results), unit: '£' %>
+						<%= number_to_currency ebay_scrape.average_price(@results), unit: '£' %>
 					</span>
 				</li>
 				<li >
 					<h4>Most Expensive Result:</h4>
 					<span class="lead">
-						<%= number_to_currency @most_expensive_result.price, unit: '£' %>		
+						<%= number_to_currency ebay_scrape.most_expensive_result(@results).price, unit: '£' %>		
 					</span>
 				</li>
 				<li>
 					<h4>Cheapest Result:</h4>
 					<span class="lead">
-						<%= number_to_currency @cheapest_result.price, unit: '£' %>
+						<%= number_to_currency ebay_scrape.cheapest_result(@results).price, unit: '£' %>
 					</span>
 				</li>
 			</ul>
@@ -36,13 +36,13 @@
 				<li>
 					<h4>Recommended Price(New):</h4> 
 					<span class="lead">
-						<%= number_to_currency @ebay_scrape.new_recommended_price, unit: '£' %>
+						<%= number_to_currency ebay_scrape.new_recommended_price, unit: '£' %>
 					</span>	
 				</li>
 				<li>
 					<h4>Recommended Price(Used):</h4> 
 					<span class="lead">
-						<%= number_to_currency @ebay_scrape.used_recommended_price, unit: '£' %>
+						<%= number_to_currency ebay_scrape.used_recommended_price, unit: '£' %>
 					</span>	
 				</li>
 			</ul>
