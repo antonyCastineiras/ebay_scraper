@@ -31,8 +31,4 @@ class EbayScrapeController < ApplicationController
   def filter_params
   	params.slice(:format, :price_order, :condition)
   end
-
-  def needs_selecting?(element)
-  	params[element.name] == element.value
-  end
 end
