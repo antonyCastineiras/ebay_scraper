@@ -1,6 +1,6 @@
 class EbayScrape < ApplicationRecord
 	serialize :object # need to remove object from model
-	has_many :results, -> { order(created_at: :asc) }
+	has_many :results
 
 	after_create :scrape_ebay, :set_average_price_of_results, :set_average_deviation_of_result_price
 

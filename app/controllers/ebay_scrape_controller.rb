@@ -25,9 +25,10 @@ class EbayScrapeController < ApplicationController
 
   def set_ebay_scrape_variables
   	@ebay_scrape = EbayScrape.find(params[:id])
-  	@results = @ebay_scrape.results
-  	@most_expensive_result = @ebay_scrape.most_expensive_result(@results)
-  	@cheapest_result = @ebay_scrape.cheapest_result(@results)
-  	@closest_match = @ebay_scrape.closest_match
+  	@results = @ebay_scrape.results.filter( filter_params )
   end	
+
+  def filter_params
+  	params.slice(:format, :price_order).permit(:format, :price_order)
+  end
 end
